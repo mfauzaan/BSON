@@ -22,6 +22,7 @@ public struct Null: Primitive {
             guard container.decodeNil() else {
                 throw BSONValueNotFound(type: Null.self, path: container.codingPath.map { $0.stringValue })
             }
+            self.init()
         }
     }
 }
