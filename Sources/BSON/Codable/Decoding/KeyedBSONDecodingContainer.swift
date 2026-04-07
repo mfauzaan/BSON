@@ -159,10 +159,16 @@ internal struct KeyedBSONDecodingContainer<K: CodingKey>: KeyedDecodingContainer
             return instance
         } else if T.self == Date.self {
             do {
+                guard let value = document[key] else {
+                    print("ERROR: \(document)")
+                    throw BSONValueNotFound(type: Date.self, path: path(forKey: codingKey))
+                }
+
                 guard let date = document[key] as? T else {
+                    print("ERROR: \(document)")
                     throw BSONTypeConversionError(from: document[key], to: Date.self)
                 }
-                
+
                 return date
             } catch {
                 let date: Date?

@@ -117,7 +117,18 @@ internal struct UnkeyedBSONDecodingContainer: UnkeyedDecodingContainer {
         if T.self == Date.self {
             let element = nextElement()
             do {
+                guard let value = element, !(value is Null) else {
+                    print("ERROR: \(element)")
+                    throw DecodingError.valueNotFound(
+                        Date.self,
+                        DecodingError.Context(
+                            codingPath: codingPath,
+                            debugDescription: "Expected Date but found null or missing value"
+                        )
+                    )
+                }
                 guard let date = element as? T else {
+                    print("ERROR: \(element)")
                     throw BSONTypeConversionError(from: element, to: Date.self)
                 }
                 
