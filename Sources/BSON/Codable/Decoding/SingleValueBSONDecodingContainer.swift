@@ -161,10 +161,19 @@ internal struct SingleValueBSONDecodingContainer: SingleValueDecodingContainer, 
     func decode<T>(_ type: T.Type) throws -> T where T: Decodable {
         if T.self == Date.self {
             do {
+                if self.decoder.primitive == nil || self.decoder.primitive is Null {
+                    throw DecodingError.valueNotFound(
+                        Date.self,
+                        DecodingError.Context(
+                            codingPath: self.codingPath,
+                            debugDescription: "Expected Date but found null or missing value"
+                        )
+                    )
+                }
+
                 guard let date = self.decoder.primitive as? T else {
                     throw BSONTypeConversionError(from: self.decoder.primitive, to: Date.self)
                 }
-                
                 return date
             } catch {
                 let date: Date?
