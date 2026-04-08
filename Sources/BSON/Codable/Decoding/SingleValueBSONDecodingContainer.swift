@@ -162,7 +162,6 @@ internal struct SingleValueBSONDecodingContainer: SingleValueDecodingContainer, 
         if T.self == Date.self {
             do {
                 if self.decoder.primitive == nil || self.decoder.primitive is Null {
-                    print("ERROR: \(decoder.primitive)")
                     throw DecodingError.valueNotFound(
                         Date.self,
                         DecodingError.Context(
@@ -173,7 +172,6 @@ internal struct SingleValueBSONDecodingContainer: SingleValueDecodingContainer, 
                 }
 
                 guard let date = self.decoder.primitive as? T else {
-                    print("ERROR: \(decoder.primitive)")
                     throw BSONTypeConversionError(from: self.decoder.primitive, to: Date.self)
                 }
                 return date
