@@ -25,7 +25,7 @@ public struct Decimal128: Primitive, Hashable {
     let low: UInt64
     let high: UInt64
     
-    internal init(low: UInt64, high: UInt64) {
+    public init(low: UInt64, high: UInt64) {
         self.low = low
         self.high = high
     }
